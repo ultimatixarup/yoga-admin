@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.yoga.admin.db.entities.Configuration;
 import com.yoga.admin.db.entities.Node;
@@ -122,6 +125,50 @@ public class AdminController {
 		String[] nodeArray = {node.getId()+"" , node.getName(),node.getLabel(),node.getDescription(),node.getType(), node.getSubtype(), node.getData(), node.getComment(), node.getRank()+""};
 		return nodeArray;
 	}
+	
+	@PostMapping(value ="/saveRank", produces= {"application/json"})
+	public ResponseEntity saveRank(@RequestParam(name = "name", required = true) String name,
+			@RequestParam(name = "rank", required = true) int rank){
+		
+		jdbcTemplate.update("update node set rank="+rank+" where name='"+name+"'");
+		
+		return new ResponseEntity(HttpStatus.OK);
+	
+	}
+	
+	@GetMapping(value ="/deleteLevel?id={id}", produces= {"application/json"})
+	public ResponseEntity deleteLevel(@PathVariable String id){
+		
+		jdbcTemplate.update("delete from node where id='"+id+"'");
+		
+		return new ResponseEntity(HttpStatus.OK);
+		
+	}
+	
+	@GetMapping(value ="/getvalues?type={type}", produces= {"application/json"})
+	public ResponseEntity<List<String[]>> getValues(@PathVariable String type){
+		
+        List<String[]> nodes = new ArrayList<String[]>();
+        jdbcTemplate.query("select distinct  label,name,description,data,type from node where type='"+type+"'"
+                , (resultSet, i) -> populateNodeFromResult(resultSet))
+                .forEach(result -> { if(result.getLabel().contains("UC-"))
+                	nodes.add(getValueArray(result));
+                });
+        
+        
+        
+        
+        
+		return new ResponseEntity<List<String[]>>(nodes,HttpStatus.OK);
+		
+	}
+	
+	String[] getValueArray(Node node){
+		String[] nodearray = {node.getId()+"",node.getDescription(),node.getData(),"icon",node.getName()};
+		return nodearray;
+	}
+	
+	
 	
 	
 	
