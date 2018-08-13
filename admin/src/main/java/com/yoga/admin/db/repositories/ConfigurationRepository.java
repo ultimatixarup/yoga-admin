@@ -3,9 +3,10 @@ package com.yoga.admin.db.repositories;
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import com.yoga.admin.db.entities.Configuration;
-
+@Repository
 public class ConfigurationRepository implements CrudRepository<Configuration, String> {
 
 	@Override

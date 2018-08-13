@@ -17,12 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.yoga.admin.db.entities.Configuration;
 import com.yoga.admin.db.entities.Node;
+import com.yoga.admin.db.repositories.AdminNodeRepository;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private AdminNodeRepository nodeRepo;
     
     private Node populateNodeFromResult(ResultSet resultSet) throws SQLException{
     	return new Node(resultSet.getLong("id"), 
@@ -105,7 +108,20 @@ public class AdminController {
 		
 	}
 	
+	@GetMapping(value = "/getnodes", produces = {"application/json"})
+	public ResponseEntity<List<String[]>> getNodes() {
+		List<String[]> nodes = new ArrayList<String[]>();
+        jdbcTemplate.query("select * from node"
+                , (resultSet, i) -> populateNodeFromResult(resultSet))
+                .forEach(result -> nodes.add(nodeArray(result)));
+        
+        return new ResponseEntity<List<String[]>>(nodes, HttpStatus.OK);
+	}
 	
+	public String[] nodeArray(Node node){
+		String[] nodeArray = {node.getId()+"" , node.getName(),node.getLabel(),node.getDescription(),node.getType(), node.getSubtype(), node.getData(), node.getComment(), node.getRank()+""};
+		return nodeArray;
+	}
 	
 	
 	
