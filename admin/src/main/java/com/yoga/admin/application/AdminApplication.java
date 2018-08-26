@@ -5,9 +5,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.yoga","com.yoga.admin.controllers","com.yoga.admin.db.repositories"})
 @EnableAutoConfiguration
-@ComponentScan({"com.yoga.admin.controllers","com.yoga.admin.db.repositories"})
 public class AdminApplication {
 
 	public static void main(String[] args) {

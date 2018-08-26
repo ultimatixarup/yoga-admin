@@ -2,8 +2,8 @@ package com.yoga.admin.service.impl;
 
 import java.util.List;
 
-import com.yoga.admin.db.entities.Configuration;
-import com.yoga.admin.db.entities.Node;
+import com.yoga.admin.application.Configuration;
+import com.yoga.admin.application.Node;
 import com.yoga.admin.service.AdminServices;
 
 public class AdminServicesImpl implements AdminServices {

@@ -1,9 +1,12 @@
-package com.yoga.admin.db.entities;
+package com.yoga.admin.application;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class Configuration {
+	@Id
+	int id;
 	String source;
 	String destination;
 	String istype;

@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.yoga.admin.db.entities.Configuration;
-import com.yoga.admin.db.entities.Node;
-import com.yoga.admin.db.repositories.AdminNodeRepository;
+import com.yoga.admin.application.AdminNodeRepository;
+import com.yoga.admin.application.Configuration;
+import com.yoga.admin.application.Node;
 
 @Controller
 @RequestMapping("/admin")
@@ -160,6 +160,16 @@ public class AdminController {
         
         
 		return new ResponseEntity<List<String[]>>(nodes,HttpStatus.OK);
+		
+	}
+	
+	
+	@PostMapping(value ="/addnode", produces= {"application/json"})
+	public ResponseEntity<Node> createNode(@PathVariable Node node){
+		
+        nodeRepo.save(node);
+        
+		return new ResponseEntity<Node>(node,HttpStatus.OK);
 		
 	}
 	

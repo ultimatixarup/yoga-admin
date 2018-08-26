@@ -1,4 +1,4 @@
-package com.yoga.admin.db.entities;
+package com.yoga.admin.application;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
