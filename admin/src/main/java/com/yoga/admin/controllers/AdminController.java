@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.yoga.admin.application.AdminNodeRepository;
 import com.yoga.admin.application.Configuration;
+import com.yoga.admin.application.ConfigurationRepository;
 import com.yoga.admin.application.Node;
 
 @Controller
@@ -29,6 +30,9 @@ public class AdminController {
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private AdminNodeRepository nodeRepo;
+    
+    @Autowired
+    private ConfigurationRepository configRepo;
     
     private Node populateNodeFromResult(ResultSet resultSet) throws SQLException{
     	return new Node(resultSet.getLong("id"), 
@@ -170,6 +174,15 @@ public class AdminController {
         nodeRepo.save(node);
         
 		return new ResponseEntity<Node>(node,HttpStatus.OK);
+		
+	}
+	
+	@PostMapping(value ="/addconfig", produces= {"application/json"})
+	public ResponseEntity<Configuration> createConfiguration(@PathVariable Configuration configuration){
+		
+		configRepo.save(configuration);
+        
+		return new ResponseEntity<Configuration>(configuration,HttpStatus.OK);
 		
 	}
 	
